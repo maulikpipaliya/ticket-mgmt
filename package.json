@@ -1,0 +1,14 @@
+{
+  "name": "ticket-mgmt",
+  "version": "1.0.0",
+  "description": "Ticket Mgmt System using Google Apps Script",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maulik Pipaliya",
+  "license": "ISC",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.45"
+  }
+}
