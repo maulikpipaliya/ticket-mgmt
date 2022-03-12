@@ -1,0 +1,12 @@
+<script>
+    function getUserInfo() {
+        var user = google.script.run.withSuccessHandler(function(response) {
+            console.log(response);
+            document.getElementById("username").innerText = response;
+        }).getActiveUserInfo();
+    }
+
+    getUserInfo();
+    
+
+</script>

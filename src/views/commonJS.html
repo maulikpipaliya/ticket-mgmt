@@ -1,0 +1,103 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+
+<script>
+    var select = (selector, all = false) => {
+        return all
+            ? [...document.querySelectorAll(selector)]
+            : document.querySelector(selector)
+    }
+
+    var on = (element, event, callback, all = false) => {
+        if (all) {
+            select(element, true).forEach((el) =>
+                el.addEventListener(event, callback)
+            )
+        } else {
+            select(element).addEventListener(event, callback)
+        }
+    }
+
+    var addClass = (element, className) => {
+        select(element).classList.add(className)
+    }
+
+    var removeClass = (element, className) => {
+        select(element).classList.remove(className)
+    }
+
+    var toggleClass = (element, className) => {
+        select(element).classList.toggle(className)
+    }
+
+</script>
+
+<script>
+
+    console.log("script.js loaded");
+
+    if (select(".fi-btn-toggle-sidebar")) {
+        console.log("hahah");
+        on(".fi-btn-toggle-sidebar", "click", function (e) {
+            console.log("click");
+            select("body").classList.toggle("toggle-sidebar");
+        });
+    }
+
+    if (select(".quill-editor-full")) {
+        console.log("Maulik");
+        var quill = new Quill("#full-editor", {
+            modules: {
+                toolbar: [[{ header: [1, 2, false] }], ["bold", "italic", "underline"], ["image", "code-block"]],
+            },
+            theme: "snow",
+        });
+    }
+
+    $(document).ready(function () {
+        // Setup - add a text input to each footer cell
+        $("#ticket-master-table thead tr").clone(true).addClass("filters").appendTo("#ticket-master-table thead");
+
+        var table = $("#ticket-master-table").DataTable({
+            orderCellsTop: true,
+            fixedHeader: true,
+            initComplete: function () {
+                var api = this.api();
+
+                // For each column
+                api
+                    .columns()
+                    .eq(0)
+                    .each(function (colIdx) {
+                        // Set the header cell to contain the input element
+                        var cell = $(".filters th").eq($(api.column(colIdx).header()).index());
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                        // On every keypress in this input
+                        $("input", $(".filters th").eq($(api.column(colIdx).header()).index()))
+                            .off("keyup change")
+                            .on("keyup change", function (e) {
+                                e.stopPropagation();
+
+                                // Get the search value
+                                $(this).attr("title", $(this).val());
+                                var regexr = "({search})"; //$(this).parents('th').find('select').val();
+
+                                var cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search(this.value != "" ? regexr.replace("{search}", "(((" + this.value + ")))") : "", this.value != "", this.value == "")
+                                    .draw();
+
+                                // $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
+            },
+        });
+    });
+
+
+</script>
