@@ -1,0 +1,35 @@
+<script>
+
+    const ticketId = $('#ticketId').val();
+
+// 
+
+    function getTicketDetails(){
+        console.log('getTicketDetails()');
+        google.script.run.withSuccessHandler(function(response){
+            console.log("response");
+            console.log(response);
+            console.log("response");
+
+            if(response){
+                $("#ticketId").val(response.ticketId);
+                $("#requestedBy").val(response.requestedBy);
+                $("#ticketType").val(response.ticketType);
+                $("#group").val(response.group);
+                $("#assignedTo").val(response.assignedTo);
+                $("#status").val(response.status);
+                $("#priority").val(response.priority);
+                $("#subject").val(response.subject);
+                $("#description").val(response.description);
+
+            } else {
+                console.log("No response. Bad TICKET ID");
+            }
+            
+            
+        }).getTicketById(ticketId);
+    }
+
+    getTicketDetails();
+
+</script>

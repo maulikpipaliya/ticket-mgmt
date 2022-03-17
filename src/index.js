@@ -6,7 +6,21 @@ function doGet(e) {
     Router.path("", renderHome);
     Router.path("/", renderHome);
     Router.path("home", renderHome);
-    Router.path("createTicket", renderCreateTicket);
+    Router.path("createTicket", () => {
+        return render("views/createTicket/createTicket", {
+            page: "createTicket",
+        });
+    });
+    Router.path("viewTicket", () => {   
+        
+        console.log("viewTicket");
+        console.log("e.parameter.ticketId");
+        console.log(e.parameter.ticketId)
+        return render("views/viewTicket/viewTicket", {
+            ticketId: e.parameter.ticketId,
+        });
+    });
+
 
     if (Router[e.parameter.path]) return Router[e.parameter.path]();
     else return renderPageNotFound();
@@ -14,7 +28,7 @@ function doGet(e) {
 
 function renderHome() {
     return render("views/home/home", {
-        isLanding: true
+        isLanding: true,
     });
 }
 
@@ -24,11 +38,6 @@ function renderPageNotFound() {
     );
 }
 
-function renderCreateTicket(){
+function renderCreateTicket() {
     return render("views/createTicket/createTicket");
-}
-
-
-function sayJoyy(){
-    return "Joyy";
 }

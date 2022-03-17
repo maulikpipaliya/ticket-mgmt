@@ -1,3 +1,24 @@
+function getDBSchema(){
+  return db
+}
+
+function getSpreadsheet(){
+  return SpreadsheetApp.openById(db.fileId)
+}
+
+function getSheet(sheetName){
+  return SpreadsheetApp.openById(db.fileId).getSheetByName(sheetName);
+}
+
+function getSheetValues(sheetName){
+  const sheet = SpreadsheetApp.openById(db.fileId).getSheetByName(sheetName);
+  return sheet.getRange(1,1, sheet.getLastRow(), sheet.getLastColumn()).getValues()
+}
+
+function getDbTableColumns(tableName){
+  return db.tables[tableName].columns;
+}
+
 function getFullName(firstName, lastName) {
     return camelCase(firstName) + " " + camelCase(lastName);
 }

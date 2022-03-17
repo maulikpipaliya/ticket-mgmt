@@ -9,8 +9,10 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Home</li>
                 <li class="breadcrumb-item">Tickets</li>
-                <li class="breadcrumb-item">Create New</li>
-
+                <li class="breadcrumb-item">All Tickets</li>
+                <li class="breadcrumb-item">
+                    <?= allParams['ticketId'] ?>
+                </li>
             </ol>
         </nav>
     </div>
@@ -18,8 +20,6 @@
     <section class="section dashboard fi-ticket-create">
         <div class="row">
 
-            <? if ('page' in allParams) { ?>
-            <? if(allParams['page'] == 'viewTicket'){ ?>
             <div class="col-12 d-none d-lg-block">
 
                 <ul class="stepper">
@@ -29,32 +29,26 @@
                     <li class="stepper__item">Resolved</li>
                     <li class="stepper__item">Reviewed</li>
                     <li class="stepper__item">Closed</li>
-
                 </ul>
             </div>
-            <? }?>
-            <? } ?>
 
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Create Ticket</h5>
+                        <h5 class="card-title">Ticket #
+                            <?= allParams['ticketId'] ?>
+                        </h5>
 
                         <form>
                             <div class="row mb-3">
                                 <label for="ticketId" class="col-sm-2 col-form-label">Ticket ID</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <? if ('page' in allParams) { ?>
-                                        <? if(allParams['page'] == 'viewTicket'){ ?>
+
                                         <input type="text" class="form-control br-050" disabled id="ticketId"
-                                            value="<?= allParams.ticketId ?>">
+                                            value="<?= allParams['ticketId'] ?>">
                                         <span class="input-group-text">Copy</span>
-                                        <? } else { ?>
-                                        <input type="text" class="form-control br-050" disabled id="ticketId">
-                                        <span class="input-group-text">Copy</span>
-                                        <? } ?>
-                                        <? } ?>
+
                                     </div>
                                 </div>
                             </div>
@@ -147,16 +141,10 @@
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-10">
 
-                                    <? if ('page' in allParams) { ?>
-                                        <? if(allParams['page'] == 'viewTicket'){ ?>
-                                        <button class="btn color-white btn-primary float-end p-3 px-4 my-2 br-050"
-                                            onclick="updateTicket();">Save</button>
-                                        <? } else {?>
 
-                                        <button class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
-                                            onclick="createTicket();">Create Ticket</button>
-                                        <? } ?>
-                                    <? } ?>
+                                    <button class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
+                                        onclick="updateTicket();">Save</button>
+
                                 </div>
                             </div>
 
@@ -203,5 +191,6 @@
     </section>
 </main>
 
+
 <?!= include("views/components/footer") ?>
-<?!= include("views/createTicket/createTicketJS") ?>
+<?!= include("views/viewTicket/viewTicketJS") ?>

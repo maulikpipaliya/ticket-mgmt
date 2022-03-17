@@ -20,7 +20,7 @@ const db = {
     tables: {
         users: {
             sheetName: "users",
-            columns: ["username", "email", "role", "createdAt", "updatedAt"],
+            columns: ["email", "fullName", "role", "createdAt", "updatedAt"],
         },
         tickets: {
             sheetName: "tickets",
@@ -41,5 +41,16 @@ const db = {
                 "deleted",
             ],
         },
+        groups: {
+          sheetName: "groups",
+          columns : ["groupId", "name", "users"]
+        }
     },
 };
+
+
+const dbConfig = "HahahLol"
+
+function haha(){
+  console.log("hello")
+}

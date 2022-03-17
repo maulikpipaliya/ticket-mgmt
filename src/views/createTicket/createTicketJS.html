@@ -30,8 +30,55 @@
 
     function createTicket() {
 
-        console.log('createTicket()');
+        console.log('createTicket() called');
 
+        const ticketData = {
+            ticketId: $('#ticketId').val(),
+            requestedBy: $("#requestedBy").val(),
+            ticketType: $('#ticketType').val(),
+            group: $('#group').val(),
+            assignedTo: $('#assignedTo').val(),
+            status: $('#status').val(),
+            priority: $('#priority').val(),
+            subject: $('#subject').val(),
+            description: $('#full-editor')[0].innerText,
+            closedAt: '',
+            dueAt: '',
+            createdAt: JSON.stringify(new Date()),
+            updatedAt: JSON.stringify(new Date()),
+            deleted: JSON.stringify(false)
+        }
+
+        console.log(ticketData);
+
+        google.script.run.withSuccessHandler(function (response) {
+            console.log(response);
+
+
+
+        }).withFailureHandler(function (response) {
+            console.log(response);
+        }).createTicket(ticketData);
+
+
+    }
+
+    function getTicketDetails(){
+
+        console.log('getTicketDetails() called');
+
+        const ticketId = $('#ticketId').val();
+
+        google.script.run.withSuccessHandler(function (response) {
+            console.log(response);
+        }).withFailureHandler(function (response) {
+            console.log(response);
+        }).getTicketById(ticketId);
+    }
+
+    getTicketDetails();
+
+    function updateTicket(){
         const ticketData = {
             ticketId: $('#ticketId').val(),
             requestedBy: $("#requestedBy").val(),
@@ -49,13 +96,6 @@
             deleted: JSON.stringify(false)
         }
 
-        console.log(ticketData);
-
-        google.script.run.withSuccessHandler(function (response) {
-            console.log(response);
-        }).withFailureHandler(function (response) {
-            console.log(response);
-        }).createTicket(ticketData);
 
 
     }

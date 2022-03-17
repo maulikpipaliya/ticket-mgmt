@@ -69,6 +69,57 @@ function createTicket(data) {
 
     range.setValues([values]);
 
+    const mailToList = getTechnicians(group).join(",");
+    const mailCcList = "";
+
+    const htmlBody = `
+    <h5>There's a new ticket in your bucket</h5>
+    <table>
+        <tr>
+            <td>Ticket ID</td>
+            <td>${ticketId}</td>   
+        </tr>
+        <tr>
+            <td>Requested By</td>
+            <td>${requestedBy}</td>
+        </tr>
+        <tr>
+            <td>Ticket Type</td>
+            <td>${ticketType}</td>
+        </tr>
+        <tr>
+            <td>Group</td>
+            <td>${group}</td>   
+        </tr>
+        <tr>
+            <td>Assigned To</td>
+            <td>${assignedTo}</td>  
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>${status}</td>
+        </tr>
+        <tr>
+            <td>Priority</td>
+            <td>${priority}</td>    
+        </tr>
+        <tr>
+            <td>Subject</td>
+            <td>${subject}</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>${description}</td>
+        </tr>
+        </table>
+    `;
+
+    MailApp.sendEmail({
+        to: mailToList,
+        subject: "New Ticket in your Bucket! 🧺",
+        htmlBody: htmlBody,
+    });
+
     return "success";
 }
 
