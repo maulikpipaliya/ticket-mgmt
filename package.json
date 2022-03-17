@@ -4,7 +4,9 @@
   "description": "Ticket Mgmt System using Google Apps Script",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push" : "clasp push",
+    "start": "nodemon --exec clasp push"
   },
   "author": "Maulik Pipaliya",
   "license": "ISC",

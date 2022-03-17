@@ -1,0 +1,52 @@
+<!-- <?= allParams ?> -->
+
+<?!= include("views/components/header", allParams) ?>
+
+<main class="home-main">
+  <section class="color-secondary">
+    <div class="row d-flex justify-content-center align-items-center my-4 py-4">
+      <div class="col-lg-8 d-flex justify-content-center align-items-center">
+        <img
+          src="https://raw.githubusercontent.com/maulikpipaliya/ticket-mgmt/383f0a63f42acf109b2c0d3a74956e63a2c646e1/src/assets/img/undraw_bug_fixing_oc-7-a.svg"
+          alt="" srcset="" style="height: 20rem;">
+      </div>
+      <div class="col-lg-4 color-white">
+        <h1 class="color-secondary">
+          Multiple problems
+        </h1>
+        <h1 class="color-white">
+          One Solution
+        </h1>
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-center align-items-center my-4 py-4">
+      <div class="col-lg-6 color-white d-flex justify-content-left">
+        <h1 class="color-secondary">
+          <span class="color-secondary">
+
+            Have an issue?
+            <br>
+          </span>
+          <span class="color-white">
+            Let us know ASAP!
+
+          </span>
+        </h1>
+
+      </div>
+      <div class="col-lg-4 d-flex justify-content-center align-items-center">
+        <img
+          src="https://raw.githubusercontent.com/maulikpipaliya/ticket-mgmt/383f0a63f42acf109b2c0d3a74956e63a2c646e1/src/assets/img/undraw_instant_support_re_iw6d.svg"
+          alt="" srcset="" style="height: 20rem;">
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<? if('isLanding' in allParams){ ?>
+  </div>
+  <? }?>
+
+<?!= include("views/components/footer") ?>

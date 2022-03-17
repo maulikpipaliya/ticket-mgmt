@@ -1,12 +1,14 @@
-function include(fileName) {
-    return HtmlService.createHtmlOutputFromFile(fileName).getContent();
+function include(fileName, params) {
+    return render(fileName, params).getContent();
 }
 
 function render(path, params) {
-    const htmlBody = HtmlService.createTemplateFromFile(path);
+    let htmlBody = HtmlService.createTemplateFromFile(path);
+    htmlBody.allParams = {};
 
     if (params) {
-        Object.keys(params).forEach(key => {
+        htmlBody.allParams = params;
+        Object.keys(params).forEach((key) => {
             htmlBody[key] = params[key];
         });
     }

@@ -1,0 +1,176 @@
+<?!= include("views/components/header") ?>
+<?!= include("views/components/sidebar") ?>
+
+<main id="main" class="main ctr-create-ticket">
+    <div class="pagetitle">
+
+        <h1>Tickets</h1>
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">Tickets</li>
+                <li class="breadcrumb-item">Create New</li>
+
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section dashboard fi-ticket-create">
+        <div class="row">
+            <div class="col-lg-8">
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Ticket</h5>
+
+                        <form>
+                            <div class="row mb-3">
+                                <label for="ticketId" class="col-sm-2 col-form-label">Ticket ID</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control br-050" disabled value="INC3728" id="ticketId">
+                                        <span class="input-group-text">Copy</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="ticketType" class="col-sm-2 col-form-label">Type</label>
+                                <div class="col-sm-10">
+                                    <select name="ticketType" id="ticketType" class="form-select br-050">
+                                        <option value="INCIDENT">Incident</option>
+                                        <option value="SERVICE_REQUEST">Service Request</option>
+                                        <option value="INQUIRY">General Inquiry</option>
+                                        <option value="FEATURE_REQUEST">Feature Request</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="subject" class="col-sm-2 col-form-label">Subject *</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="subject" class="form-control br-050">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="requestedBy" class="col-sm-2 col-form-label">Requested By</label>
+                                <div class="col-sm-10">
+                                    <input type="email" id="requestedBy" class="form-control br-050"
+                                        placeholder="fixit.developer@gmail.com">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="priority" class="col-sm-2 col-form-label">Priority</label>
+                                <div class="col-sm-10">
+                                    <select name="priority" id="priority" class="form-select br-050">
+                                        <option value="P4" selected> P4 (Low) </option>
+                                        <option value="P3">P3 (Medium) </option>
+                                        <option value="P2">P2 (High) </option>
+                                        <option value="P1">P1 (Critical)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="status" class="col-sm-2 col-form-label">Status</label>
+                                <div class="col-sm-10">
+                                    <select name="status" id="status" class="form-select br-050">
+                                        <option value="OPEN" selected>Open</option>
+                                        <option value="PENDING">Pending</option>
+                                        <option value="RESOLVED">Resolved</option>
+                                        <option value="CLOSED">Closed</option>
+                                        <option value="WAITING">Waiting</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="group" class="col-sm-2 col-form-label">Assignment Group</label>
+                                <div class="col-sm-10">
+                                    <select name="group" id="group" class="form-select br-050">
+                                        <option value="GROUP_IT">IT Support</option>
+                                        <option value="GROUP_FINANCE">Finance</option>
+                                        <option value="GROUP_HR">HR</option>
+                                        <option value="GROUP_LEGAL">Legal</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <label for="group" class="col-sm-2 col-form-label">Assigned To</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="assignedTo" id="assignedTo" placeholder="Enter email"
+                                        class="form-control br-050">
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <label for="group" class="col-sm-2 col-form-label">Desciption</label>
+                                <div class="col-sm-10">
+                                    <div class="quill-editor-full br-050" style="height: auto;" id="full-editor">
+                                        <p>Long description here</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <button type="submit"
+                                        class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050" onclick="createTicket();">Create
+                                        Ticket</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card fi-card">
+                    <div class="fi-card-filter">
+                        <a href="#" data-bs-toggle="dropdown" class="fi-card-icon"> <i
+                                class="fa-solid fa-ellipsis"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+
+                            <li class="dropdown-item" href="#">Today</li>
+                            <li class="dropdown-item" href="#">This week</li>
+                            <li class="dropdown-item" href="#">This month</li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Tickets <span> | Today </span></h5>
+
+                        <div class="fi-activity">
+                            <div class="fi-activity-item d-flex">
+                                <div class="fi-activity-label">02:43PM</div>
+                                <div class="fi-activity-status"></div>
+                                <div class="fi-activity-content">INC#43223 was solved successfully</div>
+                            </div>
+                            <div class="fi-activity-item d-flex">
+                                <div class="fi-activity-label">01:43PM</div>
+                                <div class="fi-activity-status"></div>
+                                <div class="fi-activity-content">INC#143223 received a comment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<?!= include("views/components/footer") ?>
+<?!= include("views/createTicket/createTicketJS") ?>

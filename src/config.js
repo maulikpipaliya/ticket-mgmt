@@ -1,26 +1,45 @@
 const routes = {
-    'common': {
-        'js': 'views/commonJS',
-        'css' : 'views/commonCSS',
+    common: {
+        js: "views/commonJS",
+        css: "views/commonCSS",
     },
-    'home' : {
-        'html' : 'views/HomeScreen/HomeHTML',
-        'js' : 'views/HomeScreen/HomeJS',
-        'css' : 'views/HomeScreen/HomeCSS'
+    home: {
+        html: "views/HomeScreen/home",
+        js: "views/HomeScreen/homeJS",
+        css: "views/HomeScreen/homeCSS",
     },
-    'landing':{ 
-        'html' : 'views/Landing/LandingHTML',
-        'js' : 'views/Landing/LandingJS',
-        'css' : 'views/Landing/LandingCSS'
-    }
-}
+    landing: {
+        html: "views/Landing/LandingHTML",
+        js: "views/Landing/LandingJS",
+        css: "views/Landing/LandingCSS",
+    },
+};
 
 const db = {
-    'fileId' : '1n66CRzw1U2StCKpoKH7XhoVyapyKzuRNDOTnxFy3Emg',
-    'tables' : {
-        'users' : {
-            'sheetName' : 'users',
-            'columns' : ['username', 'email', 'role', 'createdAt', 'updatedAt']
-        }
-    }
-}
+    fileId: "1n66CRzw1U2StCKpoKH7XhoVyapyKzuRNDOTnxFy3Emg",
+    tables: {
+        users: {
+            sheetName: "users",
+            columns: ["username", "email", "role", "createdAt", "updatedAt"],
+        },
+        tickets: {
+            sheetName: "tickets",
+            columns: [
+                "ticketId",
+                "requestedBy",
+                "ticketType",
+                "group",
+                "assignedTo",
+                "status",
+                "priority",
+                "subject",
+                "description",
+                "closedAt",
+                "dueAt",
+                "createdAt",
+                "updatedAt",
+                "deleted",
+            ],
+        },
+    },
+};

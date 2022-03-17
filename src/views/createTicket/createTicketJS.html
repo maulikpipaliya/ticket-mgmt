@@ -1,0 +1,62 @@
+<script>
+
+    /*
+        ticketId
+        requestedBy
+        ticketType
+        group
+        assignedTo
+        status
+        priority
+        subject
+        description
+        closedAt
+        dueAt
+        createdAt
+        updatedAt
+        deleted
+    */
+
+
+
+    $('#ticketType').bind('change', () => {
+        google.script.run.withSuccessHandler(function (ticketId) {
+            $('#ticketId').val(ticketId);
+        }).getRandomTicketId($('#ticketType').val());
+    })
+
+    //to load the ticketId for the first time
+    $('#ticketType').trigger('change');
+
+    function createTicket() {
+
+        console.log('createTicket()');
+
+        const ticketData = {
+            ticketId: $('#ticketId').val(),
+            requestedBy: $("#requestedBy").val(),
+            ticketType: $('#ticketType').val(),
+            group: $('#assignmentGroup').val(),
+            assignedTo: $('#assignedTo').val(),
+            status: $('#status').val(),
+            priority: $('#priority').val(),
+            subject: $('#subject').val(),
+            description: $('#full-editor')[0].innerText,
+            closedAt: '',
+            dueAt: '',
+            createdAt: JSON.stringify(new Date()),
+            updatedAt: JSON.stringify(new Date()),
+            deleted: JSON.stringify(false)
+        }
+
+        console.log(ticketData);
+
+        google.script.run.withSuccessHandler(function (response) {
+            console.log(response);
+        }).withFailureHandler(function (response) {
+            console.log(response);
+        }).createTicket(ticketData);
+
+
+    }
+</script>

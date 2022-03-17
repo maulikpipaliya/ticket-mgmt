@@ -2,7 +2,7 @@
     function getUserInfo() {
         var user = google.script.run.withSuccessHandler(function(response) {
             console.log(response);
-            document.getElementById("username").innerText = response;
+            // document.getElementById("username").innerText = response;
         }).getActiveUserInfo();
     }
 
