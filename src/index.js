@@ -11,16 +11,15 @@ function doGet(e) {
             page: "createTicket",
         });
     });
-    Router.path("viewTicket", () => {   
-        
-        console.log("viewTicket");
-        console.log("e.parameter.ticketId");
-        console.log(e.parameter.ticketId)
-        return render("views/viewTicket/viewTicket", {
-            ticketId: e.parameter.ticketId,
-        });
+
+    var viewTicketFunction = () => renderViewTicket(e.parameter.ticketId);
+
+    Router.path("viewTicket", viewTicketFunction);
+    Router.path("allTickets", ()=>{
+      return render("views/allTickets/allTickets");
     });
 
+    
 
     if (Router[e.parameter.path]) return Router[e.parameter.path]();
     else return renderPageNotFound();
@@ -40,4 +39,10 @@ function renderPageNotFound() {
 
 function renderCreateTicket() {
     return render("views/createTicket/createTicket");
+}
+
+function renderViewTicket(ticketId){
+  const ticketFound = getTicketById(ticketId);
+  if(!ticketFound) return render("views/viewTicket/NoTicketFound");
+  return render("views/viewTicket/viewTicket", { ticketId });
 }

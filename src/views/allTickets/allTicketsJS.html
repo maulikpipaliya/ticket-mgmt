@@ -1,0 +1,28 @@
+<script>
+  $(function() {
+      var activeUserEmail = $('#activeUserEmail').val();
+      filterMaster($("#filter_for_me"), $("input[placeholder='Assigned To']"), activeUserEmail ?? "" )
+      filterMaster($("#filter_p1"), $("input[placeholder='Priority']"), 'P1' );
+      filterMaster($("#filter_status_open"), $("input[placeholder='Status']"), 'OPEN' );
+      filterMaster($("#filter_status_in_progress"), $("input[placeholder='Status']"), 'PENDING' );
+  });
+
+
+
+  function filterMaster(filterButtonElem, inputElem, inputValue){
+    filterButtonElem.click((e)=>{
+      if(inputElem.val()==''){
+        inputElem.val(inputValue);
+        inputElem.trigger('change');
+        filterButtonElem.children('span').removeClass('bg-light text-dark border-black').addClass('bg-dark text-light border-white');
+      }
+      else{
+        inputElem.val('');
+        inputElem.trigger('change');
+        filterButtonElem.children('span').addClass('bg-light text-dark border-black').removeClass('bg-dark text-light border-white');
+      }
+    })
+  }
+
+
+</script>

@@ -69,8 +69,8 @@ function createTicket(data) {
 
     range.setValues([values]);
 
-    const mailToList = getTechnicians(group).join(",");
-    const mailCcList = "";
+    const allUsersInGroup = getUsersInGroupByRole(group, 'TECHNICIAN').map((userId)=> getUserByUserId(userId).email).join(",");
+    const ticketRequesterEmail = requestedBy;
 
     const htmlBody = `
     <h5>There's a new ticket in your bucket</h5>
@@ -115,12 +115,19 @@ function createTicket(data) {
     `;
 
     MailApp.sendEmail({
-        to: mailToList,
-        subject: "New Ticket in your Bucket! 🧺",
+        to: allUsersInGroup,
+        subject: `FixIT | New Ticket | ${ticketId} has been assigned to a group you're in! 🧺`,
         htmlBody: htmlBody,
     });
 
-    return "success";
+
+    MailApp.sendEmail({
+      to: ticketRequesterEmail,
+      subject: `FixIT | New Ticket | ${ticketId} has been created on your behalf`,
+      htmlBody: htmlBody
+    })
+
+    return ticketId;
 }
 
 function getRandomTicketId(ticketType) {

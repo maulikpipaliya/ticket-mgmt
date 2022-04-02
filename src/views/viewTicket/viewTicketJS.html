@@ -1,35 +1,81 @@
 <script>
+  const ticketId = $('#ticketId').val();
+  let ticketDetails; 
 
-    const ticketId = $('#ticketId').val();
 
-// 
+  function getTicketDetails(){
+      console.log('getTicketDetails()');
+    
+      google.script.run.withSuccessHandler(function(response){
+          console.log("response");
+          console.log(response);
+          console.log("response");
+          ticketDetails = response;
 
-    function getTicketDetails(){
-        console.log('getTicketDetails()');
-        google.script.run.withSuccessHandler(function(response){
-            console.log("response");
-            console.log(response);
-            console.log("response");
+          if(response){
+              $("#ticketId").val(response.ticketId);
+              $("#requestedBy").val(response.requestedBy);
+              $("#ticketType").val(response.ticketType);
+              $("#group").val(response.group);
+              $("#assignedTo").val(response.assignedTo);
+              $("#status").val(response.status);
+              $("#priority").val(response.priority);
+              $("#subject").val(response.subject);
+              $("#description").val(response.description);
 
-            if(response){
-                $("#ticketId").val(response.ticketId);
-                $("#requestedBy").val(response.requestedBy);
-                $("#ticketType").val(response.ticketType);
-                $("#group").val(response.group);
-                $("#assignedTo").val(response.assignedTo);
-                $("#status").val(response.status);
-                $("#priority").val(response.priority);
-                $("#subject").val(response.subject);
-                $("#description").val(response.description);
+          } else {
+              console.log("No response. Bad TICKET ID");
+          }
+      }).getTicketById(ticketId);
 
-            } else {
-                console.log("No response. Bad TICKET ID");
-            }
-            
-            
-        }).getTicketById(ticketId);
-    }
+      return ticketDetails;
+  }
 
-    getTicketDetails();
+  ticketDetails= getTicketDetails();
+
+
+  function updateTicket(){
+    console.log("In Update Ticket")
+    console.log("ticketDetails");
+    console.log(ticketDetails);
+
+    const newTicketData = {
+            ticketId: $('#ticketId').val(),
+            requestedBy: $("#requestedBy").val(),
+            ticketType: $('#ticketType').val(),
+            group: $('#group').val(),
+            assignedTo: $('#assignedTo').val(),
+            status: $('#status').val(),
+            priority: $('#priority').val(),
+            subject: $('#subject').val(),
+            description: $('#full-editor')[0].innerText,
+            closedAt: '',
+            dueAt: '',
+            createdAt: JSON.stringify(new Date()),
+            updatedAt: JSON.stringify(new Date()),
+            deleted: JSON.stringify(false)
+        }
+
+    const ticketInArray = Object.values(newTicketData);
+
+    showLoader();
+    google.script.run.withSuccessHandler((response)=>{
+      console.log("Row updated")
+    }).updateTicket(ticketDetails.ticketId, ticketInArray);
+    goToTicketURL(ticketDetails.ticketId)
+
+  }
+
+  function resolveTicket(){
+    console.log("Resolving ticket");
+        google.script.run.withSuccessHandler((response)=>{
+      console.log("Ticket resolved")
+    }).resolveTicket(ticketDetails.ticketId);
+
+    $("#stepper_in_progress").removeClass('current').addClass('complete');
+    $("#stepper_on_hold").addClass("complete");
+    $("#stepper_resolved").addClass("current");
+  }
+  
 
 </script>

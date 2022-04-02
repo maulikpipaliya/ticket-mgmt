@@ -1,0 +1,83 @@
+<?!= include("views/components/header") ?>
+<?!= include("views/components/sidebar") ?>
+
+<? var activeUser = getActiveUserInfo(); ?>
+
+<main id="main" class="main bg-white">
+  <div class="pagetitle">
+
+    <h1>Tickets</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item">Tickets</li>
+        <li class="breadcrumb-item">All Tickets
+
+          <? if(activeUser.role === 'USER') { ?>
+            <?= '( Requested By You )' ?>
+          <? } ?>
+
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section dashboard fi-ticket-create">
+    <div class="row">
+      <? var allTickets = getTicketsByGroup('GROUP_IT'); ?>
+      <? var htmlbody; ?>
+      <? if(activeUser.role === 'USER') { ?>
+        <? htmlbody = getAllTicketsForUser(); ?>
+      <? } ?>
+
+      <? if(activeUser.role === 'TECHNICIAN') { ?>
+        <? htmlbody = getAllTicketsForTechnician(activeUser.userId); ?>
+      <? } ?>
+      
+
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title fi-card-title">All Tickets</h5>
+
+            <div class="row my-4">
+              <? if(activeUser.role === 'TECHNICIAN') { ?>
+                <div class="col-2 btn" id="filter_for_me"><span class="p-2 px-4 badge rounded-pill bg-light text-dark border-black">Assigned To Me</span></div>
+                <div class="col-1 btn" id="filter_p1"><span class="p-2 px-4 badge rounded-pill bg-light text-dark border-black">P1</span></div>
+                <div class="col-1 btn" id="filter_status_open"><span class="p-2 px-4 badge rounded-pill badge-light text-dark border-black">OPEN</span></div>
+                <div class="col-1 btn" id="filter_status_in_progress"><span class="p-2 badge rounded-pill badge-light text-dark border-black">IN PROGRESS</span></div>
+              <? } ?>
+            </div>
+
+            <table class="table table-borderless datatable" id="ticket-master-table"
+              style="table-layout:fixed; width:100%;">
+              <thead>
+                <tr>
+                  <th scope="col">Ticket ID</th>
+                  <th scope="col">Subject</th>
+                  <th scope="col">Assigned To</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Created</th>
+                  <!-- <th scope="col"></th> -->
+                  <!-- <th scope="col"><i class="fa-solid fa-ellipsis"></i></th> -->
+
+                </tr>
+
+              </thead>
+              <tbody id="allTicketsTBody">
+                  <?!= htmlbody ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+</main>
+
+
+<?!= include("views/components/footer") ?>
+<?!= include("views/allTickets/allTicketsJS") ?>

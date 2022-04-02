@@ -1,7 +1,12 @@
 <?!= include("views/components/header") ?>
 <?!= include("views/components/sidebar") ?>
 
+<? var activeUser = getActiveUserInfo(); ?>
+<? var recentTicketsHTML = getTemplateRecentTicketsForUser(5); ?>
+
 <main id="main" class="main ctr-create-ticket">
+    <? var url = getScriptURL(); ?>
+    <input type="hidden" value="<?= url ?>" id="url" />
     <div class="pagetitle">
 
         <h1>Tickets</h1>
@@ -40,7 +45,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Create Ticket</h5>
 
-                        <form>
+                        <div>
                             <div class="row mb-3">
                                 <label for="ticketId" class="col-sm-2 col-form-label">Ticket ID</label>
                                 <div class="col-sm-10">
@@ -51,8 +56,8 @@
                                             value="<?= allParams.ticketId ?>">
                                         <span class="input-group-text">Copy</span>
                                         <? } else { ?>
-                                        <input type="text" class="form-control br-050" disabled id="ticketId">
-                                        <span class="input-group-text">Copy</span>
+                                        <input type="text" class="form-control br-050" disabled id="ticketId" >
+                                        <span class="input-group-text" id="btnCopy">Copy</span>
                                         <? } ?>
                                         <? } ?>
                                     </div>
@@ -80,8 +85,7 @@
                             <div class="row mb-3">
                                 <label for="requestedBy" class="col-sm-2 col-form-label">Requested By</label>
                                 <div class="col-sm-10">
-                                    <input type="email" id="requestedBy" class="form-control br-050"
-                                        placeholder="fixit.developer@gmail.com">
+                                    <input type="email" id="requestedBy" class="form-control br-050" value="<?= activeUser.email ?>">
                                 </div>
                             </div>
 
@@ -97,6 +101,8 @@
                                 </div>
                             </div>
 
+                            <? if(activeUser.role !== 'USER') { ?>
+
                             <div class="row mb-3">
                                 <label for="status" class="col-sm-2 col-form-label">Status</label>
                                 <div class="col-sm-10">
@@ -109,6 +115,8 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <? } ?>
 
                             <div class="row mb-3">
                                 <label for="group" class="col-sm-2 col-form-label">Assignment Group</label>
@@ -124,6 +132,8 @@
                             </div>
 
 
+                          <? if(activeUser.role !== 'USER') { ?>
+
                             <div class="row mb-3">
                                 <label for="group" class="col-sm-2 col-form-label">Assigned To</label>
                                 <div class="col-sm-10">
@@ -132,12 +142,14 @@
                                 </div>
                             </div>
 
+                          <? } ?>
+
 
                             <div class="row mb-3">
                                 <label for="group" class="col-sm-2 col-form-label">Desciption</label>
                                 <div class="col-sm-10">
-                                    <div class="quill-editor-full br-050" style="height: auto;" id="full-editor">
-                                        <p>Long description here</p>
+                                    <div class="quill-editor-full br-050" style="height: auto;" id="full-editor" aria-placeholder="Enter long description here">
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -147,53 +159,40 @@
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-10">
 
+
                                     <? if ('page' in allParams) { ?>
                                         <? if(allParams['page'] == 'viewTicket'){ ?>
                                         <button class="btn color-white btn-primary float-end p-3 px-4 my-2 br-050"
                                             onclick="updateTicket();">Save</button>
                                         <? } else {?>
 
-                                        <button class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
-                                            onclick="createTicket();">Create Ticket</button>
+                                        <button id="btnCreateTicket" class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
+                                            onclick="createTicket(event);">Create Ticket</button>
                                         <? } ?>
                                     <? } ?>
                                 </div>
                             </div>
 
 
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="card fi-card">
                     <div class="fi-card-filter">
-                        <a href="#" data-bs-toggle="dropdown" class="fi-card-icon"> <i
-                                class="fa-solid fa-ellipsis"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
+                        <a href="<?= getScriptURL() ?>?path=allTickets" class="fi-card-icon"> 
+                                <span>View All</span>
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
 
-                            <li class="dropdown-item" href="#">Today</li>
-                            <li class="dropdown-item" href="#">This week</li>
-                            <li class="dropdown-item" href="#">This month</li>
-                        </ul>
+                                </a>
+                  
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Recent Tickets <span> | Today </span></h5>
+                        <h5 class="card-title">Recent Tickets <span> | last 5 </span></h5>
 
                         <div class="fi-activity">
-                            <div class="fi-activity-item d-flex">
-                                <div class="fi-activity-label">02:43PM</div>
-                                <div class="fi-activity-status"></div>
-                                <div class="fi-activity-content">INC#43223 was solved successfully</div>
-                            </div>
-                            <div class="fi-activity-item d-flex">
-                                <div class="fi-activity-label">01:43PM</div>
-                                <div class="fi-activity-status"></div>
-                                <div class="fi-activity-content">INC#143223 received a comment</div>
-                            </div>
+                           <?!= recentTicketsHTML ?>
                         </div>
                     </div>
                 </div>

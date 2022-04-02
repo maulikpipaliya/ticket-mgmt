@@ -20,7 +20,7 @@ const db = {
     tables: {
         users: {
             sheetName: "users",
-            columns: ["email", "fullName", "role", "createdAt", "updatedAt"],
+            columns: ["userId", "email", "fullName", "role", "createdAt", "updatedAt"],
         },
         tickets: {
             sheetName: "tickets",

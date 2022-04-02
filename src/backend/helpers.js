@@ -1,3 +1,11 @@
+function mainHelpers(){
+}
+
+function getScriptURL() {
+  return ScriptApp.getService().getUrl();
+}
+
+
 function getDBSchema(){
   return db
 }
@@ -31,6 +39,11 @@ function camelCase(str) {
         });
 }
 
+function getScriptURL() {
+  return ScriptApp.getService().getUrl();
+}
+
+
 /**
  * Takes values and outputs an array of objects
  * @param {values} array of array = data in range
@@ -41,8 +54,9 @@ function camelCase(str) {
   
     // fetch headers or if not avaiable, add manual ones.
     let headerColumns = hasHeader ? values[0] : values[0].map((r) => { return "column" + cid++ });
-    headerColumns = headerColumns.map((c)=> camelCase(c))
-    console.log(headerColumns)
+    // console.log(headerColumns)
+    // headerColumns = headerColumns.map((c)=> camelCase(c))
+    // console.log(headerColumns)
     let numColumns = headerColumns.length;
     let numRows = values.length;
     let rowIndexStartsFrom = hasHeader ? 1 : 0;
@@ -57,6 +71,6 @@ function camelCase(str) {
       data.push(rowObj);
     }
   
-    console.log(data)
+    // console.log(data)
     return data;
   }

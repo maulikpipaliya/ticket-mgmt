@@ -15,3 +15,15 @@ function sendMail(toList, ccList) {
     htmlBody: htmlBody,
   });
 }
+
+function sendResolveMail(toList, ccList){
+  const htmlBody = "<h5>Below ticket has been marked resolved by the technician. Please review and close.</h5>"
+
+
+  MailApp.sendEmail({
+    to: toList.join(','),
+    subject: "FixIT | Ticket to Review",
+    cc: ccList.join(','),
+    htmlBody: htmlBody,
+  });
+}

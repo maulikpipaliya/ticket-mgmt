@@ -1,24 +1,5 @@
 <script>
 
-    /*
-        ticketId
-        requestedBy
-        ticketType
-        group
-        assignedTo
-        status
-        priority
-        subject
-        description
-        closedAt
-        dueAt
-        createdAt
-        updatedAt
-        deleted
-    */
-
-
-
     $('#ticketType').bind('change', () => {
         google.script.run.withSuccessHandler(function (ticketId) {
             $('#ticketId').val(ticketId);
@@ -28,7 +9,7 @@
     //to load the ticketId for the first time
     $('#ticketType').trigger('change');
 
-    function createTicket() {
+    function createTicket(event) {
 
         console.log('createTicket() called');
 
@@ -38,10 +19,10 @@
             ticketType: $('#ticketType').val(),
             group: $('#group').val(),
             assignedTo: $('#assignedTo').val(),
-            status: $('#status').val(),
+            status: $('#status').val() ?? "OPEN",
             priority: $('#priority').val(),
             subject: $('#subject').val(),
-            description: $('#full-editor')[0].innerText,
+            description: quill.root.innerHTML,
             closedAt: '',
             dueAt: '',
             createdAt: JSON.stringify(new Date()),
@@ -52,15 +33,16 @@
         console.log(ticketData);
 
         google.script.run.withSuccessHandler(function (response) {
-            console.log(response);
-
-
+            var ticketIdCreated = response;
+            
+            showLoader();
+            goToTicketURL(ticketIdCreated);
 
         }).withFailureHandler(function (response) {
             console.log(response);
         }).createTicket(ticketData);
 
-
+        // event.preventDefault();
     }
 
     function getTicketDetails(){
@@ -99,4 +81,7 @@
 
 
     }
+
+
+
 </script>

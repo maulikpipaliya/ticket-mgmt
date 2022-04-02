@@ -1,194 +1,268 @@
+<? var activeUser = getActiveUserInfo(); ?>
+<? var activeTicket = getTicketById(allParams['ticketId']); ?>
+
 <?!= include("views/components/header") ?>
 <?!= include("views/components/sidebar") ?>
 
-<main id="main" class="main ctr-create-ticket">
-    <div class="pagetitle">
+<main id="main" class="main bg-white">
+  <div class="pagetitle">
 
-        <h1>Tickets</h1>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">Home</li>
-                <li class="breadcrumb-item">Tickets</li>
-                <li class="breadcrumb-item">All Tickets</li>
-                <li class="breadcrumb-item">
-                    <?= allParams['ticketId'] ?>
-                </li>
-            </ol>
-        </nav>
-    </div>
+    <h1>Tickets</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item">Tickets</li>
+        <li class="breadcrumb-item">
+          All Tickets
+          <? if(activeUser.role === 'USER') { ?>
+            <?= 'Requested By You' ?>
+          <? } ?>
 
-    <section class="section dashboard fi-ticket-create">
-        <div class="row">
+        </li>
+        <li class="breadcrumb-item">
+          <?= allParams['ticketId'] ?>
+        </li>
+      </ol>
+    </nav>
+  </div>
 
-            <div class="col-12 d-none d-lg-block">
+  <section class="section dashboard fi-ticket-create">
+    <div class="row">
 
-                <ul class="stepper">
-                    <li class="stepper__item complete">New</li>
-                    <li class="stepper__item current">In Progress</li>
-                    <li class="stepper__item">On HOLD</li>
-                    <li class="stepper__item">Resolved</li>
-                    <li class="stepper__item">Reviewed</li>
-                    <li class="stepper__item">Closed</li>
-                </ul>
-            </div>
+      <div class="col-12 d-none d-lg-block">
 
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Ticket #
-                            <?= allParams['ticketId'] ?>
-                        </h5>
 
-                        <form>
-                            <div class="row mb-3">
-                                <label for="ticketId" class="col-sm-2 col-form-label">Ticket ID</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group">
+        <ul class="stepper">
+          <? var ticketStatus = activeTicket['status'] ?>
 
-                                        <input type="text" class="form-control br-050" disabled id="ticketId"
+          <li class="stepper__item <? if(ticketStatus == 'OPEN') { ?> <?= 'current' ?> <? } ?>" id="stepper_new">New
+          </li>
+          <li class="stepper__item <? if(ticketStatus == 'PENDING') { ?> <?= 'current' ?> <? } ?>"
+            id="stepper_in_progress">In Progress</li>
+          <li class="stepper__item <? if(ticketStatus == 'WAITING') { ?> <?= 'current' ?> <? } ?>" id="stepper_on_hold">
+            On HOLD</li>
+          <li class="stepper__item <? if(ticketStatus == 'RESOLVED') { ?> <?= 'current' ?> <? } ?>"
+            id="stepper_resolved">Resolved</li>
+          <li class="stepper__item <? if(ticketStatus == 'REVIEWED') { ?> <?= 'current' ?> <? } ?>"
+            id="stepper_reviewed">Reviewed</li>
+          <li class="stepper__item <? if(ticketStatus == 'CLOSED') { ?> <?= 'current' ?> <? } ?>" id="stepper_closed">
+            Closed</li>
+        </ul>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Ticket #
+              <?= allParams['ticketId'] ?>
+            </h5>
+
+            <div>
+              <div class="row mb-3">
+                <label for="ticketId" class="col-sm-2 col-form-label">Ticket ID</label>
+                <div class="col-sm-10">
+                  <div class="input-group">
+
+                    <input type="text" class="form-control br-050" disabled id="ticketId"
                                             value="<?= allParams['ticketId'] ?>">
-                                        <span class="input-group-text">Copy</span>
+                    <span class="input-group-text" id="btnCopy">Copy</span>
 
-                                    </div>
-                                </div>
-                            </div>
+                  </div>
+                </div>
+              </div>
 
-                            <div class="row mb-3">
-                                <label for="ticketType" class="col-sm-2 col-form-label">Type</label>
-                                <div class="col-sm-10">
-                                    <select name="ticketType" id="ticketType" class="form-select br-050">
+              <div class="row mb-3">
+                <label for="ticketType" class="col-sm-2 col-form-label">Type</label>
+                <div class="col-sm-10">
+                  <select name="ticketType" id="ticketType" class="form-select br-050">
                                         <option value="INCIDENT">Incident</option>
                                         <option value="SERVICE_REQUEST">Service Request</option>
                                         <option value="INQUIRY">General Inquiry</option>
                                         <option value="FEATURE_REQUEST">Feature Request</option>
                                     </select>
-                                </div>
-                            </div>
+                </div>
+              </div>
 
-                            <div class="row mb-3">
-                                <label for="subject" class="col-sm-2 col-form-label">Subject *</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="subject" class="form-control br-050">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="requestedBy" class="col-sm-2 col-form-label">Requested By</label>
-                                <div class="col-sm-10">
-                                    <input type="email" id="requestedBy" class="form-control br-050"
-                                        placeholder="fixit.developer@gmail.com">
-                                </div>
-                            </div>
+              <div class="row mb-3">
+                <label for="subject" class="col-sm-2 col-form-label">Subject *</label>
+                <div class="col-sm-10">
+                  <input type="text" id="subject" class="form-control br-050">
+                </div>
+              </div>
+              <? var disabled=false; ?>
+              <? if(activeUser.role !== 'USER') { 
+                disabled = true;
+              } ?>
+              <div class="row mb-3">
+                <label for="requestedBy" class="col-sm-2 col-form-label">Requested By</label>
+                <div class="col-sm-10">
+                  <input type="email" id="requestedBy" class="form-control br-050"
+                                        placeholder="fixit.developer@gmail.com" disabled="<?= disabled ?>">
+                </div>
+              </div>
 
-                            <div class="row mb-3">
-                                <label for="priority" class="col-sm-2 col-form-label">Priority</label>
-                                <div class="col-sm-10">
-                                    <select name="priority" id="priority" class="form-select br-050">
+              <div class="row mb-3">
+                <label for="priority" class="col-sm-2 col-form-label">Priority</label>
+                <div class="col-sm-10">
+                  <select name="priority" id="priority" class="form-select br-050">
                                         <option value="P4" selected> P4 (Low) </option>
                                         <option value="P3">P3 (Medium) </option>
                                         <option value="P2">P2 (High) </option>
                                         <option value="P1">P1 (Critical)</option>
                                     </select>
-                                </div>
-                            </div>
+                </div>
+              </div>
+              <? if(activeUser.role === 'TECHNICIAN' ) { ?>
+                <div class="row mb-3">
+                  <label for="status" class="col-sm-2 col-form-label">Status</label>
+                  <div class="col-sm-10">
+                    <select name="status" id="status" class="form-select br-050">
+                                          <option value="OPEN" selected>Open</option>
+                                          <option value="PENDING">Pending</option>
+                                          <option value="RESOLVED">Resolved</option>
+                                          <option value="CLOSED">Closed</option>
+                                          <option value="WAITING">Waiting</option>
+                                      </select>
+                  </div>
+                </div>
+              <? } ?>
 
-                            <div class="row mb-3">
-                                <label for="status" class="col-sm-2 col-form-label">Status</label>
-                                <div class="col-sm-10">
-                                    <select name="status" id="status" class="form-select br-050">
-                                        <option value="OPEN" selected>Open</option>
-                                        <option value="PENDING">Pending</option>
-                                        <option value="RESOLVED">Resolved</option>
-                                        <option value="CLOSED">Closed</option>
-                                        <option value="WAITING">Waiting</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="group" class="col-sm-2 col-form-label">Assignment Group</label>
-                                <div class="col-sm-10">
-                                    <select name="group" id="group" class="form-select br-050">
+              <div class="row mb-3">
+                <label for="group" class="col-sm-2 col-form-label">Assignment Group</label>
+                <div class="col-sm-10">
+                  <select name="group" id="group" class="form-select br-050">
                                         <option value="GROUP_IT">IT Support</option>
                                         <option value="GROUP_FINANCE">Finance</option>
                                         <option value="GROUP_HR">HR</option>
                                         <option value="GROUP_LEGAL">Legal</option>
 
                                     </select>
-                                </div>
-                            </div>
+                </div>
+              </div>
 
 
-                            <div class="row mb-3">
-                                <label for="group" class="col-sm-2 col-form-label">Assigned To</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="assignedTo" id="assignedTo" placeholder="Enter email"
-                                        class="form-control br-050">
-                                </div>
-                            </div>
+              <div class="row mb-3">
+                <label for="group" class="col-sm-2 col-form-label">Assigned To</label>
+                <div class="col-sm-10">
+                  <? if(activeUser.role === 'USER') { ?>
+                    <? var assignedToDisabled = true; ?>
+                  <? } else { ?>
+                    <? assignedToDisabled = false; ?>
+                  <? } ?>
+
+                  
+                  <input type="text" list="assignedToList" name="assignedTo" id="assignedTo" class="form-control br-050" <? if(assignedToDisabled) { ?> <?= 'disabled' ?> <? } ?> >
 
 
-                            <div class="row mb-3">
-                                <label for="group" class="col-sm-2 col-form-label">Desciption</label>
-                                <div class="col-sm-10">
-                                    <div class="quill-editor-full br-050" style="height: auto;" id="full-editor">
-                                        <p>Long description here</p>
-                                    </div>
-                                </div>
-                            </div>
+                <? var dataListHTML =  getTemplateGroupUsers(getGroupOfUser(activeUser.userId)) ?>
+                  <datalist id="assignedToList">
+                    <?!= dataListHTML ?>
+                  </datalist>
+                </div>
+              </div>
 
 
-                            <div class="row mb-3">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-10">
+              <div class="row mb-3">
+                <label for="group" class="col-sm-2 col-form-label">Desciption</label>
+                <div class="col-sm-10">
+                  <div class="quill-editor-full br-050" style="height: auto;" id="full-editor">
+                    <p>Long description here</p>
+                  </div>
+                </div>
+              </div>
 
 
-                                    <button class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
+              <div class="row mb-3">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+
+
+                  <button class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
                                         onclick="updateTicket();">Save</button>
 
-                                </div>
-                            </div>
+
+                  <? if(activeUser.role === 'TECHNICIAN') { ?>
+
+                  <button class="btn color-white bg-color-primary float-end p-3 px-4 my-2 br-050"
+                                        onclick="resolveTicket();">Resolve</button>
 
 
-                        </form>
-                    </div>
+                  <? } ?>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card fi-card">
-                    <div class="fi-card-filter">
-                        <a href="#" data-bs-toggle="dropdown" class="fi-card-icon"> <i
-                                class="fa-solid fa-ellipsis"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
+              </div>
 
-                            <li class="dropdown-item" href="#">Today</li>
-                            <li class="dropdown-item" href="#">This week</li>
-                            <li class="dropdown-item" href="#">This month</li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Recent Tickets <span> | Today </span></h5>
 
-                        <div class="fi-activity">
-                            <div class="fi-activity-item d-flex">
-                                <div class="fi-activity-label">02:43PM</div>
-                                <div class="fi-activity-status"></div>
-                                <div class="fi-activity-content">INC#43223 was solved successfully</div>
-                            </div>
-                            <div class="fi-activity-item d-flex">
-                                <div class="fi-activity-label">01:43PM</div>
-                                <div class="fi-activity-status"></div>
-                                <div class="fi-activity-content">INC#143223 received a comment</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
+          </div>
         </div>
+      </div>
+      <div class="col-lg-4">
+        <!-- <div class="card fi-card">
+          <div class="card-body">
+            <input type="text" placeholder="Add comment">
+          </div>
+        </div> -->
+         <div class="card fi-card">
+       
+          <div class="card-body">
+            <h5 class="card-title">Recent Activity <span>  | (Currently Static) </span></h5>
 
-    </section>
+            <div class="activity">
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">32 min</div>
+                  <i class="fa-solid fa-circle activity-badge text-success align-self-start"></i>
+                  
+                  <div class="activity-content">
+                    Ticket was set to RESOLVED by <a href="#" class="fw-bold text-dark">@MaulikPipaliya</a>
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">56 min</div>
+                  <i class="fa-solid fa-circle activity-badge text-danger align-self-start"></i>
+                  <div class="activity-content">
+                    Ticket was set to IN PROGRESS.
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">2 hrs</div>
+                  <i class="fa-solid fa-circle activity-badge text-primary align-self-start"></i>
+                  <div class="activity-content">
+                    Ticket was set to ON HOLD with a comment: "Waiting for customer's response"
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">1 day</div>
+                  <i class="fa-solid fa-circle activity-badge text-info align-self-start"></i>
+                  <div class="activity-content">
+                    TECHNICIAN <a href="#" class="fw-bold text-dark">@MaulikPipaliya </a> set the status to IN PROGRESS
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">2 days</div>
+                  <i class="fa-solid fa-circle activity-badge text-warning align-self-start"></i>
+                  <div class="activity-content">
+                    Ticket was created.
+                  </div>
+                </div><!-- End activity item-->
+
+        
+
+              </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 offset-lg-8">
+       
+      </div>
+    </div>
+
+  </section>
 </main>
 
 
